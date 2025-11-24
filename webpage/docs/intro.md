@@ -3,48 +3,26 @@ sidebar_position: 1
 slug: /
 ---
 
-# Introdução
+# Sistemas Cyberfísicos, Realidade Virtual e Aumentada
 
-Este é apenas um template para você poder criar um repositório de conteúdo
-rapidamente e com uma configuração opinionada do Docusaurus.
+E ae pessoal, tudo bem com vocês?
 
-Neste repositório, já estão configurados:
+Gente esse é um repositório especial para mim, faz muito tempo que eu quero escrever e compartilhar meus estudos para cada uma destas áreas. Vou fazer meu melhor para escrever o máximo que conseguir para compartilhar conteúdo que acredito ser formativo e informátivo!
 
-* A base do docusaurus, que fica dentro do diretório `webpage`
+:::note[Melhorias são mais que bem vindas!]
 
-## 1. O que você precisa fazer
+*If I have seen further, it is by standing on the shoulders of Giants (Newton, 1675)*
 
-### 1.1. Modificar o nome da página
+<img src="https://images2.memedroid.com/images/UPLOADED54/523df2c8db861.jpeg" style={{ display: 'block', marginLeft: 'auto', maxHeight: '60vh', marginRight: 'auto' }}/>
 
-## 2. O que você pode querer fazer
+Gente, conhecimento é construído com todos compartilhando ele e enriquecendo o que foi desenvolvido. Se você achar que tem alguma modificação para melhorar, fique a vontade para fazer um Pull Request para adicionar o conteúdo.
 
-Não vou delinear todas as funcionalidades do docusaurus. Para isso, existe a
-[documentação do docusaurus](https://docusaurus.io/docs/next). No entanto, há
-algumas coisas que você pode querer fazer e que são esperadas pela natureza do
-conteúdo que vamos publicar aqui. Para essas, vou deixar um pequeno tutorial.
+Estou pensando na seguinte estrutura para aumentar o repositório:
 
-### 2.1. Adicionando equações `LaTeX`
+- ***Projetos***: esse diretório vai ficar reservado para cada um dos projetos que estão sendo desenvolvidos e os projetos que forem sugeridos para o repo. Vou deixar um projeto como exemplo logo menos.
 
-**Inline**
+:::
 
-```LaTeX
-Let $f\colon[a,b]\to\R$ be Riemann integrable. Let $F\colon[a,b]\to\R$ be
-$F(x)=\int_{a}^{x} f(t)\,dt$. Then $F$ is continuous, and at all $x$ such that
-$f$ is continuous at $x$, $F$ is differentiable at $x$ with $F'(x)=f(x)$.
-```
+Logo menos uma breve introdução sobre cada um dos diretórios do projeto.
 
-Let $f\colon[a,b]\to\R$ be Riemann integrable. Let $F\colon[a,b]\to\R$ be
-$F(x)=\int_{a}^{x} f(t)\,dt$. Then $F$ is continuous, and at all $x$ such that
-$f$ is continuous at $x$, $F$ is differentiable at $x$ with $F'(x)=f(x)$.
-
-**Bloco**
-
-```LaTeX
-$$
-I = \int_0^{2\pi} \sin(x)\,dx
-$$
-```
-
-$$
-I = \int_0^{2\pi} \sin(x)\,dx
-$$
+<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSl54C8Q6EIn-l4GTWio5QGwJXke9dQhLwPKg&s" style={{ display: 'block', marginLeft: 'auto', maxHeight: '60vh', marginRight: 'auto' }}/>
