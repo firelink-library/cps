@@ -490,7 +490,7 @@ class Player(pygame.sprite.Sprite):
         self.rect.x = max(0, min(WIDTH - self.rect.width, self.rect.x))
         self.rect.y = max(0, min(HEIGHT - self.rect.height, self.rect.y))
 
-# Criar jogador
+# Criar jogador no centro da tela.
 player = Player(WIDTH // 2, HEIGHT // 2)
 all_sprites = pygame.sprite.Group()
 all_sprites.add(player)
@@ -518,6 +518,7 @@ while running:
 pygame.quit()
 sys.exit()
 ```
+Boa agora temos nosso sprite customizado par navegar na tela. Vamos estudar agora como podemos colocar mais elementos na tela e detectar a colisão entre eles.
 
 ### Exemplo 4: Detecção de Colisão
 
@@ -525,7 +526,9 @@ sys.exit()
 import pygame
 import sys
 import random
+from utils.loader import load_image
 
+# Inicializa o PyGame
 pygame.init()
 
 WIDTH, HEIGHT = 800, 600
@@ -540,8 +543,7 @@ RED = (255, 0, 0)
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.Surface((40, 40))
-        self.image.fill(GREEN)
+        self.image = load_image("python.png")
         self.rect = self.image.get_rect()
         self.rect.center = (WIDTH // 2, HEIGHT // 2)
         self.speed = 5
@@ -562,8 +564,7 @@ class Player(pygame.sprite.Sprite):
 class Obstacle(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
-        self.image = pygame.Surface((30, 30))
-        self.image.fill(BLUE)
+        self.image = load_image("star.png")
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
@@ -572,12 +573,16 @@ class Obstacle(pygame.sprite.Sprite):
 player = Player()
 obstacles = pygame.sprite.Group()
 
+# Define o número máximo de obstáculos
+MAX_ENEMY = 10
+
 # Criar obstáculos aleatórios
-for _ in range(10):
-    x = random.randint(0, WIDTH - 30)
-    y = random.randint(0, HEIGHT - 30)
+for _ in range(MAX_ENEMY):
+    x = random.randint(0, WIDTH - 128)
+    y = random.randint(0, HEIGHT - 128)
     obstacles.add(Obstacle(x, y))
 
+# Adiciona os elementos na tela
 all_sprites = pygame.sprite.Group()
 all_sprites.add(player)
 all_sprites.add(obstacles)
@@ -600,6 +605,10 @@ while running:
     # Detectar colisões
     hits = pygame.sprite.spritecollide(player, obstacles, True)
     score += len(hits)
+
+    # Se todos os obstáculos foram encontrados, termina a execução do programa
+    if score == MAX_ENEMY:
+        running = False
     
     # Desenhar
     screen.fill(BLACK)
@@ -615,6 +624,10 @@ while running:
 pygame.quit()
 sys.exit()
 ```
+
+Aqui já temos um sistema mais interessante e com mais recursos! Nosso jogo agora detecta colisões! E vamos lá, já está ficando mais interessante!
+
+Pense agora que você tem um ponto de partida para iniciar suas demais interações com o PyGame.
 
 ## Sugestões de Uso
 
