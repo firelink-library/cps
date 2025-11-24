@@ -9,7 +9,7 @@ const config: Config = {
   favicon: 'img/firelink.png',
 
   url: 'https://firelink-library.github.io',
-  baseUrl: '/docusaurus-template',
+  baseUrl: '/cps',
 
   organizationName: 'Firelink Library',
   projectName: 'docusaurus-template',
