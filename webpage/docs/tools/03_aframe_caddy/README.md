@@ -971,6 +971,773 @@ projetos-aframe/
 ```
 
 
+## Exemplos de Realidade Aumentada (AR) com A-Frame
+
+A-Frame pode ser combinado com AR.js para criar experiências de Realidade Aumentada baseadas em marcadores. Abaixo apresentamos três exemplos progressivos que demonstram desde o básico até interações mais complexas.
+
+### Pré-requisitos para AR
+
+Para usar AR com A-Frame, você precisa:
+
+1. **Servidor HTTPS**: AR requer HTTPS (ou localhost) devido a políticas de segurança dos navegadores
+2. **Câmera**: Um dispositivo com câmera (webcam ou smartphone)
+3. **Marcadores**: Imprimir os marcadores padrão do AR.js (Hiro, Kanji, etc.)
+
+### Exemplo 1: AR Básico - Um Modelo em um Marcador
+
+Este é o exemplo mais simples de AR: um único objeto 3D (cubo) que aparece quando o marcador Hiro é detectado.
+
+**Arquivo: `exemplos/exemplo-ar-01-basico.html`**
+
+**Características:**
+- Usa o marcador padrão "Hiro" do AR.js
+- Exibe um cubo azul com animação de rotação
+- Inclui texto informativo sobre o objeto
+- Interface simples e direta
+
+**Como usar:**
+1. Abra o arquivo em um servidor HTTPS (ou localhost)
+2. Permita o acesso à câmera quando solicitado
+3. Imprima o marcador Hiro: [HIRO.jpg](https://jeromeetienne.github.io/AR.js/data/images/HIRO.jpg)
+4. Apontar a câmera para o marcador impresso
+5. O cubo azul aparecerá sobre o marcador
+
+**Conceitos apresentados:**
+- Configuração básica do AR.js com A-Frame
+- Uso de marcadores padrão (`preset="hiro"`)
+- Posicionamento de objetos 3D em relação ao marcador
+- Animações básicas em objetos AR
+
+```html
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AR Básico - A-Frame com Marcador</title>
+    
+    <!-- A-Frame Core -->
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    
+    <!-- AR.js para Realidade Aumentada -->
+    <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js@3.4.2/aframe/build/aframe-ar-nft.js"></script>
+    
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+        .info {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: Arial, sans-serif;
+            z-index: 1000;
+            max-width: 300px;
+        }
+    </style>
+</head>
+<body>
+    <div class="info">
+        <h3>AR Básico - Exemplo 1</h3>
+        <p>Apontar a câmera para o marcador Hiro.</p>
+        <p>Você pode imprimir o marcador em: <a href="https://jeromeetienne.github.io/AR.js/data/images/HIRO.jpg" target="_blank" style="color: #4CAF50;">HIRO.jpg</a></p>
+    </div>
+
+    <!-- Cena AR -->
+    <a-scene 
+        vr-mode-ui="enabled: false"
+        embedded
+        arjs="sourceType: webcam; videoTexture: true; debugUIEnabled: false;"
+        renderer="logarithmicDepthBuffer: true; colorManagement: true; sortObjects: true;"
+    >
+        <!-- Marcador Hiro padrão do AR.js -->
+        <a-marker 
+            type="pattern" 
+            preset="hiro"
+            raycaster="objects: .clickable"
+            emitevents="true"
+            cursor="fuse: false; rayOrigin: mouse;"
+        >
+            <!-- Modelo 3D: Cubo colorido -->
+            <a-box 
+                position="0 0.5 0" 
+                rotation="0 45 0" 
+                color="#4CC3D9"
+                scale="0.5 0.5 0.5"
+                animation="property: rotation; to: 0 405 0; loop: true; dur: 5000"
+            ></a-box>
+            
+            <!-- Texto informativo -->
+            <a-text 
+                value="AR Básico" 
+                position="0 1.2 0" 
+                align="center"
+                color="#FFFFFF"
+                scale="2 2 2"
+            ></a-text>
+        </a-marker>
+
+        <!-- Câmera -->
+        <a-entity camera></a-entity>
+    </a-scene>
+</body>
+</html>
+
+```
+
+### Exemplo 2: AR com Múltiplos Modelos
+
+Este exemplo demonstra como usar múltiplos marcadores diferentes, cada um exibindo um objeto 3D diferente.
+
+**Arquivo: `exemplos/exemplo-ar-02-multiplos-modelos.html`**
+
+**Características:**
+- Usa dois marcadores diferentes: Hiro e Kanji
+- Cada marcador exibe um objeto diferente (esfera e cilindro)
+- Animações diferentes para cada objeto
+- Iluminação individual para cada marcador
+
+**Como usar:**
+1. Imprima os dois marcadores:
+   - [Marcador Hiro](https://jeromeetienne.github.io/AR.js/data/images/HIRO.jpg)
+   - [Marcador Kanji](https://jeromeetienne.github.io/AR.js/data/images/kanji.jpg)
+2. Abra o arquivo em um servidor HTTPS
+3. Apontar a câmera para qualquer um dos marcadores
+4. Cada marcador mostrará seu respectivo objeto 3D
+
+**Conceitos apresentados:**
+- Múltiplos marcadores na mesma cena
+- Diferentes tipos de geometria (esfera, cilindro, torus)
+- Animações personalizadas por objeto
+- Iluminação local para cada marcador
+
+```html
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AR Múltiplos Modelos - A-Frame</title>
+    
+    <!-- A-Frame Core -->
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    
+    <!-- AR.js para Realidade Aumentada -->
+    <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js@3.4.2/aframe/build/aframe-ar-nft.js"></script>
+    
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+        .info {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: Arial, sans-serif;
+            z-index: 1000;
+            max-width: 350px;
+        }
+    </style>
+</head>
+<body>
+    <div class="info">
+        <h3>AR Múltiplos Modelos - Exemplo 2</h3>
+        <p>Use dois marcadores diferentes:</p>
+        <ul style="font-size: 0.9em;">
+            <li><strong>Hiro:</strong> Mostra uma esfera azul</li>
+            <li><strong>Kanji:</strong> Mostra um cilindro vermelho</li>
+        </ul>
+        <p>Marcadores: 
+            <a href="https://jeromeetienne.github.io/AR.js/data/images/HIRO.jpg" target="_blank" style="color: #4CAF50;">Hiro</a> | 
+            <a href="https://jeromeetienne.github.io/AR.js/data/images/kanji.jpg" target="_blank" style="color: #4CAF50;">Kanji</a>
+        </p>
+    </div>
+
+    <!-- Cena AR -->
+    <a-scene 
+        vr-mode-ui="enabled: false"
+        embedded
+        arjs="sourceType: webcam; videoTexture: true; debugUIEnabled: false;"
+        renderer="logarithmicDepthBuffer: true; colorManagement: true; sortObjects: true;"
+    >
+        <!-- Marcador 1: Hiro - Esfera Azul -->
+        <a-marker 
+            type="pattern" 
+            preset="hiro"
+        >
+            <!-- Esfera azul com animação de rotação -->
+            <a-sphere 
+                position="0 0.5 0" 
+                radius="0.3"
+                color="#2196F3"
+                animation="property: rotation; to: 360 360 0; loop: true; dur: 3000"
+            ></a-sphere>
+            
+            <!-- Texto identificador -->
+            <a-text 
+                value="Marcador Hiro" 
+                position="0 1 0" 
+                align="center"
+                color="#FFFFFF"
+                scale="1.5 1.5 1.5"
+            ></a-text>
+            
+            <!-- Iluminação local -->
+            <a-light type="point" position="0 1 0" intensity="0.5"></a-light>
+        </a-marker>
+
+        <!-- Marcador 2: Kanji - Cilindro Vermelho -->
+        <a-marker 
+            type="pattern" 
+            preset="kanji"
+        >
+            <!-- Cilindro vermelho com animação de escala -->
+            <a-cylinder 
+                position="0 0.5 0" 
+                radius="0.3"
+                height="0.6"
+                color="#F44336"
+                animation="property: scale; to: 1.2 1.2 1.2; dir: alternate; loop: true; dur: 2000"
+            ></a-cylinder>
+            
+            <!-- Texto identificador -->
+            <a-text 
+                value="Marcador Kanji" 
+                position="0 1.2 0" 
+                align="center"
+                color="#FFFFFF"
+                scale="1.5 1.5 1.5"
+            ></a-text>
+            
+            <!-- Iluminação local -->
+            <a-light type="point" position="0 1 0" intensity="0.5"></a-light>
+        </a-marker>
+
+        <!-- Marcador 3: Opcional - Usando um terceiro marcador customizado -->
+        <!-- Para usar, você precisaria criar seu próprio padrão de marcador -->
+        <!-- Exemplo com marcador "area" (se disponível) -->
+        <a-marker 
+            type="pattern" 
+            preset="area"
+        >
+            <!-- Torus (rosquinha) verde -->
+            <a-torus 
+                position="0 0.5 0" 
+                radius="0.3"
+                radius-tubular="0.1"
+                color="#4CAF50"
+                animation="property: rotation; to: 0 360 0; loop: true; dur: 4000"
+            ></a-torus>
+            
+            <a-text 
+                value="Marcador Area" 
+                position="0 1 0" 
+                align="center"
+                color="#FFFFFF"
+                scale="1.5 1.5 1.5"
+            ></a-text>
+        </a-marker>
+
+        <!-- Câmera -->
+        <a-entity camera></a-entity>
+    </a-scene>
+</body>
+</html>
+```
+
+### Exemplo 3: AR com Interação do Usuário
+
+Este exemplo avançado demonstra como adicionar interatividade aos objetos AR, permitindo que o usuário clique ou toque nos objetos para interagir com eles.
+
+**Arquivo: `exemplos/exemplo-ar-03-interacao.html`**
+
+**Características:**
+- Três objetos interativos diferentes
+- Mudança de cor ao clicar
+- Animações de feedback visual
+- Efeitos hover (quando o mouse passa sobre o objeto)
+- Status em tempo real das interações
+- Componentes customizados do A-Frame
+
+**Funcionalidades de interação:**
+- **Cubo**: Muda de cor aleatoriamente ao clicar e faz animação de pulso
+- **Esfera**: Move-se para uma nova posição aleatória ao clicar
+- **Cilindro**: Responde a cliques com feedback visual
+
+**Como usar:**
+1. Imprima o marcador Hiro
+2. Abra o arquivo em um servidor HTTPS
+3. Apontar a câmera para o marcador
+4. Clique ou toque nos objetos 3D para interagir
+5. Observe o painel de status na parte inferior para feedback
+
+**Conceitos apresentados:**
+- Componentes customizados do A-Frame (`AFRAME.registerComponent`)
+- Eventos de interação (click, mouseenter, mouseleave)
+- Manipulação dinâmica de atributos (cor, posição, escala)
+- Animações baseadas em eventos
+- Feedback visual para o usuário
+
+```html
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AR com Interação - A-Frame</title>
+    
+    <!-- A-Frame Core -->
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    
+    <!-- AR.js para Realidade Aumentada -->
+    <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js@3.4.2/aframe/build/aframe-ar-nft.js"></script>
+    
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+        .info {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: Arial, sans-serif;
+            z-index: 1000;
+            max-width: 350px;
+        }
+        .status {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: Arial, sans-serif;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <div class="info">
+        <h3>AR com Interação - Exemplo 3</h3>
+        <p>Clique ou toque nos objetos para interagir!</p>
+        <p>Marcador: <a href="https://jeromeetienne.github.io/AR.js/data/images/HIRO.jpg" target="_blank" style="color: #4CAF50;">HIRO.jpg</a></p>
+    </div>
+    
+    <div class="status" id="status">
+        <p>Status: Aguardando interação...</p>
+    </div>
+
+    <!-- Cena AR -->
+    <a-scene 
+        vr-mode-ui="enabled: false"
+        embedded
+        arjs="sourceType: webcam; videoTexture: true; debugUIEnabled: false;"
+        renderer="logarithmicDepthBuffer: true; colorManagement: true; sortObjects: true;"
+    >
+        <!-- Marcador Hiro -->
+        <a-marker 
+            type="pattern" 
+            preset="hiro"
+            raycaster="objects: .clickable"
+            emitevents="true"
+            cursor="fuse: false; rayOrigin: mouse;"
+        >
+            <!-- Objeto 1: Cubo clicável que muda de cor -->
+            <a-box 
+                class="clickable"
+                position="-0.5 0.5 0" 
+                rotation="0 45 0" 
+                color="#FF5722"
+                scale="0.4 0.4 0.4"
+                animation__rotate="property: rotation; to: 0 405 0; loop: true; dur: 5000"
+                animation__pulse="property: scale; to: 0.5 0.5 0.5; dir: alternate; loop: true; dur: 1000; startEvents: click"
+                clickable
+            >
+                <a-text 
+                    value="Clique!" 
+                    position="0 0.5 0" 
+                    align="center"
+                    color="#FFFFFF"
+                    scale="1 1 1"
+                ></a-text>
+            </a-box>
+
+            <!-- Objeto 2: Esfera clicável que se move -->
+            <a-sphere 
+                class="clickable"
+                position="0.5 0.5 0" 
+                radius="0.2"
+                color="#2196F3"
+                animation__rotate="property: rotation; to: 360 360 0; loop: true; dur: 3000"
+                clickable
+            >
+                <a-text 
+                    value="Toque!" 
+                    position="0 0.4 0" 
+                    align="center"
+                    color="#FFFFFF"
+                    scale="0.8 0.8 0.8"
+                ></a-text>
+            </a-sphere>
+
+            <!-- Objeto 3: Cilindro clicável que gira -->
+            <a-cylinder 
+                class="clickable"
+                position="0 0.5 -0.5" 
+                radius="0.2"
+                height="0.4"
+                color="#4CAF50"
+                clickable
+            >
+                <a-text 
+                    value="Interaja!" 
+                    position="0 0.5 0" 
+                    align="center"
+                    color="#FFFFFF"
+                    scale="0.8 0.8 0.8"
+                ></a-text>
+            </a-cylinder>
+
+            <!-- Texto de instrução -->
+            <a-text 
+                value="Interaja com os objetos" 
+                position="0 1.3 0" 
+                align="center"
+                color="#FFFFFF"
+                scale="1.2 1.2 1.2"
+            ></a-text>
+
+            <!-- Iluminação -->
+            <a-light type="point" position="0 1 0" intensity="0.8"></a-light>
+        </a-marker>
+
+        <!-- Câmera -->
+        <a-entity camera></a-entity>
+    </a-scene>
+
+    <script>
+        // Componente customizado para interação
+        AFRAME.registerComponent('clickable', {
+            init: function () {
+                this.el.addEventListener('click', this.onClick.bind(this));
+                this.el.addEventListener('mouseenter', this.onMouseEnter.bind(this));
+                this.el.addEventListener('mouseleave', this.onMouseLeave.bind(this));
+                this.originalColor = this.el.getAttribute('color');
+                this.originalScale = this.el.getAttribute('scale') || '1 1 1';
+            },
+            
+            onClick: function (evt) {
+                const statusEl = document.getElementById('status');
+                const objectType = this.el.tagName.toLowerCase();
+                
+                // Mudar cor ao clicar
+                const colors = ['#FF5722', '#2196F3', '#4CAF50', '#FFC107', '#9C27B0', '#00BCD4'];
+                const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                this.el.setAttribute('color', randomColor);
+                
+                // Animação de pulso
+                this.el.setAttribute('animation__pulse', {
+                    property: 'scale',
+                    to: this.scaleUp(this.originalScale),
+                    dir: 'alternate',
+                    dur: 300,
+                    easing: 'easeInOutQuad'
+                });
+                
+                // Atualizar status
+                statusEl.innerHTML = `<p>Status: ${objectType} clicado! Cor alterada para ${randomColor}</p>`;
+                
+                // Resetar após animação
+                setTimeout(() => {
+                    this.el.removeAttribute('animation__pulse');
+                }, 300);
+            },
+            
+            onMouseEnter: function () {
+                // Efeito hover - aumentar ligeiramente
+                const currentScale = this.el.getAttribute('scale');
+                this.el.setAttribute('scale', this.scaleUp(currentScale));
+            },
+            
+            onMouseLeave: function () {
+                // Voltar ao tamanho original
+                this.el.setAttribute('scale', this.originalScale);
+            },
+            
+            scaleUp: function (scale) {
+                const scaleArray = scale.split(' ').map(parseFloat);
+                return scaleArray.map(s => (s * 1.2).toFixed(2)).join(' ');
+            }
+        });
+
+        // Componente para movimento da esfera ao clicar
+        AFRAME.registerComponent('movable', {
+            init: function () {
+                this.el.addEventListener('click', this.onClick.bind(this));
+                this.originalPosition = this.el.getAttribute('position');
+            },
+            
+            onClick: function () {
+                const pos = this.el.getAttribute('position');
+                // Mover para uma nova posição aleatória
+                const newX = (Math.random() - 0.5) * 1;
+                const newY = 0.5 + Math.random() * 0.5;
+                const newZ = (Math.random() - 0.5) * 1;
+                
+                this.el.setAttribute('animation', {
+                    property: 'position',
+                    to: `${newX} ${newY} ${newZ}`,
+                    dur: 500,
+                    easing: 'easeInOutQuad'
+                });
+            }
+        });
+
+        // Adicionar componente movable à esfera
+        document.addEventListener('DOMContentLoaded', function() {
+            const sphere = document.querySelector('a-sphere');
+            if (sphere) {
+                sphere.setAttribute('movable', '');
+            }
+        });
+    </script>
+</body>
+</html>
+
+```
+
+### Estrutura dos Exemplos
+
+Todos os exemplos seguem uma estrutura similar:
+
+```html
+<a-scene arjs="...">
+    <a-marker type="pattern" preset="hiro">
+        <!-- Objetos 3D aqui -->
+    </a-marker>
+    <a-entity camera></a-entity>
+</a-scene>
+```
+
+**Elementos principais:**
+- `<a-scene>`: Configurado com AR.js para habilitar AR
+- `<a-marker>`: Define o marcador que será rastreado
+- Objetos 3D: Posicionados dentro do marcador
+- `<a-entity camera>`: Câmera que captura o ambiente real
+
+### Tipos de Marcadores AR Disponíveis
+
+O AR.js suporta diferentes tipos de marcadores, cada um com suas características e casos de uso. Abaixo estão os principais tipos disponíveis:
+
+#### 1. Marcadores Padrão (Pattern Markers)
+
+Os marcadores padrão são pré-definidos e prontos para uso. São os mais fáceis de começar:
+
+##### Marcador Hiro
+O marcador Hiro é o mais popular e amplamente utilizado. É ideal para iniciantes.
+
+```html
+<a-marker type="pattern" preset="hiro">
+    <!-- Seus objetos 3D aqui -->
+</a-marker>
+```
+
+**Download do marcador:** [HIRO.jpg](https://jeromeetienne.github.io/AR.js/data/images/HIRO.jpg)
+
+##### Marcador Kanji
+Um marcador alternativo ao Hiro, útil quando você precisa de múltiplos marcadores diferentes.
+
+```html
+<a-marker type="pattern" preset="kanji">
+    <!-- Seus objetos 3D aqui -->
+</a-marker>
+```
+
+**Download do marcador:** [kanji.jpg](https://jeromeetienne.github.io/AR.js/data/images/kanji.jpg)
+
+##### Marcador Area
+Outro marcador padrão disponível no AR.js.
+
+```html
+<a-marker type="pattern" preset="area">
+    <!-- Seus objetos 3D aqui -->
+</a-marker>
+```
+
+**Download do marcador:** [area.jpg](https://jeromeetienne.github.io/AR.js/data/images/area.jpg)
+
+#### 2. Marcadores de Código de Barras (Barcode Markers)
+
+Os marcadores de código de barras são identificados por valores numéricos (0-511). São úteis quando você precisa de muitos marcadores diferentes na mesma cena, pois cada número representa um marcador único.
+
+```html
+<!-- Marcador de código de barras #10 -->
+<a-marker type="barcode" value="10">
+    <!-- Seus objetos 3D aqui -->
+</a-marker>
+
+<!-- Marcador de código de barras #17 -->
+<a-marker type="barcode" value="17">
+    <!-- Seus objetos 3D aqui -->
+</a-marker>
+
+<!-- Marcador de código de barras #20 -->
+<a-marker type="barcode" value="20">
+    <!-- Seus objetos 3D aqui -->
+</a-marker>
+```
+
+**Vantagens:**
+- Permite até 512 marcadores diferentes (valores de 0 a 511)
+- Cada marcador tem um padrão visual único
+- Ideal para aplicações que precisam de muitos marcadores
+
+**Como gerar marcadores de código de barras:**
+1. Acesse o [gerador de marcadores AR.js](https://jeromeetienne.github.io/AR.js/three.js/examples/marker-training/examples/generator.html)
+2. Selecione o tipo "Barcode"
+3. Escolha o número do marcador (0-511)
+4. Imprima o marcador gerado
+
+#### 3. Marcadores Personalizados (Custom Pattern Markers)
+
+Marcadores personalizados permitem que você crie seus próprios padrões visuais únicos. Isso é útil para branding, projetos específicos ou quando você quer um design customizado.
+
+##### Criando um Marcador Personalizado
+
+**Passo 1: Prepare sua imagem**
+- Use uma imagem quadrada (recomendado: 512x512 ou 1024x1024 pixels)
+- A imagem deve ter bordas bem definidas e contrastantes
+- O conteúdo central não deve tocar as bordas (mantenha uma margem)
+- Use imagens com alto contraste (preto e branco funcionam melhor)
+
+**Passo 2: Treine o marcador**
+1. Acesse o [AR.js Marker Training](https://jeromeetienne.github.io/AR.js/three.js/examples/marker-training/examples/generator.html)
+2. Faça upload da sua imagem
+3. O sistema gerará um arquivo `.patt` (pattern file)
+4. Baixe o arquivo `.patt` gerado
+
+**Passo 3: Use no seu projeto**
+
+Coloque o arquivo `.patt` na pasta do seu projeto e referencie-o:
+
+```html
+<a-marker 
+    type="pattern" 
+    url="caminho/para/seu-marcador.patt"
+>
+    <!-- Seus objetos 3D aqui -->
+</a-marker>
+```
+
+**Exemplo de estrutura de pastas:**
+```
+projeto-ar/
+├── index.html
+├── marcadores/
+│   ├── logo-empresa.patt
+│   └── simbolo-custom.patt
+└── assets/
+    └── modelos/
+```
+
+**Exemplo completo:**
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js@3.4.2/aframe/build/aframe-ar-nft.js"></script>
+</head>
+<body>
+    <a-scene arjs="sourceType: webcam;">
+        <!-- Marcador personalizado -->
+        <a-marker 
+            type="pattern" 
+            url="marcadores/logo-empresa.patt"
+        >
+            <a-box position="0 0.5 0" color="#4CC3D9"></a-box>
+        </a-marker>
+        
+        <a-entity camera></a-entity>
+    </a-scene>
+</body>
+</html>
+```
+
+#### 4. Comparação dos Tipos de Marcadores
+
+| Tipo | Quantidade | Facilidade | Caso de Uso |
+|------|------------|------------|-------------|
+| **Padrão (Hiro/Kanji/Area)** | 3 pré-definidos | ⭐⭐⭐ Muito fácil | Projetos simples, prototipagem rápida |
+| **Código de Barras** | 512 (0-511) | ⭐⭐ Fácil | Múltiplos marcadores, aplicações educacionais |
+| **Personalizado** | Ilimitado | ⭐ Média | Branding, projetos específicos, design único |
+
+#### 5. Dicas para Usar Marcadores
+
+**Impressão:**
+- Imprima em papel branco de boa qualidade
+- Use tamanho mínimo de 8x8 cm para melhor detecção
+- Evite dobras ou amassados no marcador
+- Use papel grosso ou cole em uma superfície rígida
+
+**Iluminação:**
+- Use iluminação uniforme e adequada
+- Evite sombras sobre o marcador
+- Evite reflexos e brilhos excessivos
+- Teste em diferentes condições de luz
+
+**Posicionamento:**
+- Mantenha o marcador plano e estável
+- Mantenha uma distância adequada da câmera (30-80 cm)
+- Evite movimentos muito rápidos
+- Certifique-se de que o marcador está completamente visível na câmera
+
+**Múltiplos Marcadores:**
+- Use marcadores diferentes para cada objeto
+- Mantenha os marcadores separados (mínimo 10 cm)
+- Certifique-se de que todos os marcadores estão bem iluminados
+- Teste a detecção de cada marcador individualmente antes de usar juntos
+
+#### 6. Recursos e Ferramentas Úteis
+
+- **Gerador de Marcadores AR.js**: [AR.js Marker Training](https://jeromeetienne.github.io/AR.js/three.js/examples/marker-training/examples/generator.html)
+- **Marcadores Padrão**: [AR.js Data Images](https://jeromeetienne.github.io/AR.js/data/images/)
+- **Documentação AR.js**: [AR.js Documentation](https://ar-js-org.github.io/AR.js-Docs/)
+- **Exemplos de Código**: [AR.js Examples](https://github.com/AR-js-org/AR.js/tree/master/aframe/examples)
+
+### Dicas e Boas Práticas
+
+1. **Iluminação**: Adicione luzes locais dentro dos marcadores para melhor visualização dos objetos
+2. **Escala**: Ajuste a escala dos objetos para que sejam visíveis e proporcionais ao marcador
+3. **Performance**: Use modelos 3D otimizados (baixa poligonal) para melhor performance
+4. **Marcadores**: Imprima os marcadores em papel branco, sem dobras, e com boa iluminação
+5. **Câmera**: Mantenha o marcador estável e bem iluminado para melhor rastreamento
+
+### Próximos Passos
+
+Após dominar estes exemplos, você pode:
+- Substituir geometrias básicas por modelos GLTF/GLB complexos
+- Criar marcadores customizados
+- Adicionar física com `aframe-physics-system`
+- Integrar sons e efeitos sonoros
+- Criar experiências multi-usuário
+
 ## Criando um HelloWorld com o AFrame
 
 Pessoal vou iniciar colocando algumas referências que acredito que valem a pena vocês darem uma olhada:
