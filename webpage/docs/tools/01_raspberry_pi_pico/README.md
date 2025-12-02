@@ -134,6 +134,7 @@ from machine import Pin
 import time
 
 # Configurar o LED integrado (GPIO 25)
+# Em alguns casos, pode ser que ele fique disponível pela constante LED
 led = Pin(25, Pin.OUT)
 
 # Loop infinito
@@ -550,6 +551,8 @@ except KeyboardInterrupt:
 - `trigger=Pin.IRQ_FALLING` ativa quando o sinal vai de 1 para 0
 - `handler=button_handler` é a função chamada quando a interrupção ocorre
 - A interrupção funciona mesmo enquanto o código principal está executando
+
+
 
 ### Exemplo 14: Interrupção - Debounce de Botão
 
